@@ -29,8 +29,8 @@ export const renderPost = (post, { phone } = {}) => html`
   <div class="content">
   ${ post.offers ? renderMenu(post.offers) : renderText(post.content) }
   </div>
-  <a href="${ post.url }" target="_blank" class="btn">Open on Facebook</a>
-  <a href="tel:${ phone }" target="_blank" class="btn btn-phone">
+  <a href="${ post.url }" rel="noopener" target="_blank" class="btn">Open on Facebook</a>
+  <a href="tel:${ phone }" rel="noopener" target="_blank" class="btn btn-phone">
     <i class="icon material-icons">call</i> Order
   </a>
 </div>
@@ -40,6 +40,6 @@ export const renderError = (message, { url } = {}) => html`
 <div class="error">
   <h2 class="title">Error</h2>
   <span class="message">${ message }</span>
-  <a href="${ url }" target="_blank" class="btn">Open on Facebook</a>
+  <a href="${ url }" rel="noopener" target="_blank" class="btn">Open on Facebook</a>
 </div>
 `;
