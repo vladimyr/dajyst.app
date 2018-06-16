@@ -1,13 +1,13 @@
 {
   "esversion": 6,
   "undef": true,
-  "unused": true,
+  "unused": "vars",
   "browser": true,
   "node": true,
   "predef": [
-    "-fetch"
+    "-fetch",
+    "-Symbol"
   ],
   "eqeqeq": true,
-  "newcap": false,
-  "globals": {}
+  "newcap": false
 }
