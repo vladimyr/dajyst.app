@@ -37,6 +37,7 @@ corner-ribbon($width, $text-height) {
   text-align center
   transform-origin 0 100%
   transform rotate(45deg)
+  user-select none
 }
 
 .closed-ribbon
@@ -93,6 +94,7 @@ html, body
   line-height 12px
   vertical-align middle
   display inline-block
+  user-select none
 
   &:hover
     background-color $fb-link-color
@@ -109,6 +111,7 @@ html, body
   .icon
     font-size inherit
     vertical-align top
+    user-select none
 
 .error
   @extend .card
