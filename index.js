@@ -1,12 +1,10 @@
-'use strict';
-
 window.Promise = window.Promise || require('pinkie-promise');
 
 import './style.styl';
 
 import $ from 'zepto';
-import html from 'bel';
-import raw from 'bel/raw';
+import html from 'nanohtml';
+import raw from 'nanohtml/raw';
 import fecha from 'fecha';
 import http from './http';
 import { readPosts } from './scraper';
@@ -33,14 +31,14 @@ const renderText = content => {
 };
 
 const renderMenu = offers => html`
-  <ul class="menu">
-  ${ offers.map(({ name, price }) => html`
-    <li class="offer">
-      <span class="name">${ name }</span>
-      <span class="price price-${ price }">${ price }kn</span>
-    </li>
-  `)}
-  </ul>
+<ul class="menu">
+${ offers.map(({ name, price }) => html`
+  <li class="offer">
+    <span class="name">${ name }</span>
+    <span class="price price-${ price }">${ price }kn</span>
+  </li>
+`)}
+</ul>
 `;
 
 const renderPost = post => html`

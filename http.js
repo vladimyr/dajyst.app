@@ -1,5 +1,3 @@
-'use strict';
-
 import fetch from 'whatwg-fetch';
 import urlJoin from 'url-join';
 import qs from 'querystring';

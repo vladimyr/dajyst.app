@@ -1,5 +1,3 @@
-'use strict';
-
 import $ from 'zepto';
 import urlJoin from 'url-join';
 

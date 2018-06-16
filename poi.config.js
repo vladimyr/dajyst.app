@@ -21,7 +21,7 @@ const bubleOptions = {
 module.exports = (options, req) => ({
   entry: './index.js',
   presets: [
-    require('poi-preset-buble')({ loaderOptions: bubleOptions })
+    require('poi-preset-buble')({ bubleOptions })
   ],
   html: {
     version,
