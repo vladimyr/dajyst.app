@@ -84,7 +84,7 @@ fetchPosts(url, 5)
     }
 
     if (posts[0].type === 'closed-notice') {
-      $('html').addClass('closed');
+      $(document.documentElement).addClass('closed');
     }
 
     $output.show();
