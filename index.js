@@ -15,6 +15,18 @@ const ua = `${pkg.name}/${pkg.version}`;
 const url = 'https://facebook.com/dajyst/posts';
 const phone = '+385957488338';
 
+const Types = {
+  Standard: Symbol('standard'),
+  ClosedNotice: Symbol('closed-notice'),
+  DailyMenu: Symbol('daily-menu')
+};
+
+const classes = {
+  [Types.Standard]: 'standard',
+  [Types.ClosedNotice]: 'closed-notice',
+  [Types.DailyMenu]: 'menu'
+};
+
 const reMenuHeading = /^Danas u ponudi\s*:?\s*/i;
 const reClosedNotice = /ne(?:[čćc]e)?\s+radi/i;
 const rePrice = /\s*(\d+)?(?:\s*kn|\.00)\s*/;
@@ -73,7 +85,7 @@ fetchPosts(url, 5)
   .then(posts => {
     posts.forEach(post =>
       $(renderPost(post))
-        .addClass(post.type)
+        .addClass(classes[post.type])
         .toggleClass('today', isToday(post.timestamp))
         .appendTo($output));
 
@@ -83,7 +95,7 @@ fetchPosts(url, 5)
         .appendTo($output);
     }
 
-    if (posts[0].type === 'closed-notice') {
+    if (posts[0].type === Types.ClosedNotice) {
       $(document.documentElement).addClass('closed');
     }
 
@@ -100,13 +112,13 @@ function fetchPosts(fbUrl, limit) {
 
 function parsePost(post) {
   if (!isDailyMenu(post)) {
-    post.type = isClosedNotice(post) ? 'closed-notice' : 'standard';
+    post.type = isClosedNotice(post) ? Types.ClosedNotice : Types.Standard;
     return post;
   }
 
   const menu = extractMenu(post);
   post.offers = parseMenu(menu);
-  post.type = 'menu';
+  post.type = Types.DailyMenu;
   return post;
 }
 
