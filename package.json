@@ -16,6 +16,7 @@
   "author": "vladimyr",
   "license": "MIT",
   "dependencies": {
+    "es6-symbol": "^3.1.1",
     "fecha": "^2.3.3",
     "nanohtml": "^1.2.4",
     "pinkie-promise": "^2.0.1",

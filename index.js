@@ -4,6 +4,7 @@ import './style.styl';
 
 import $ from 'zepto';
 import http from './http';
+import Symbol from 'es6-symbol';
 import { readPosts } from './scraper';
 import { trimLines, reformatText } from './helpers';
 import { renderError, renderPost } from './renderer';
