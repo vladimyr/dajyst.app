@@ -16,9 +16,11 @@ const url = 'https://facebook.com/dajyst/posts';
 const phone = '+385957488338';
 
 const reMenuHeading = /^Danas u ponudi\s*:?\s*/i;
+const reClosedNotice = /ne(?:[čćc]e)?\s+radi/i;
 const rePrice = /\s*(\d+)?(?:\s*kn|\.00)\s*/;
 const headingSize = 1;
 
+const isClosedNotice = post => reClosedNotice.test(post.content);
 const isDailyMenu = post => reMenuHeading.test(post.content);
 
 const timestampFormat = 'MMMM D [at] H:mm';
@@ -94,7 +96,7 @@ function fetchPosts(fbUrl, limit) {
 
 function parsePost(post) {
   if (!isDailyMenu(post)) {
-    post.type = 'standard';
+    post.type = isClosedNotice(post) ? 'standard closed-notice' : 'standard';
     return post;
   }
 
