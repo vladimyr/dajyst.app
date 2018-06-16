@@ -83,6 +83,10 @@ fetchPosts(url, 5)
         .appendTo($output);
     }
 
+    if (posts[0].type === 'closed-notice') {
+      $('html').addClass('closed');
+    }
+
     $output.show();
     $spinner.hide();
   });
@@ -96,7 +100,7 @@ function fetchPosts(fbUrl, limit) {
 
 function parsePost(post) {
   if (!isDailyMenu(post)) {
-    post.type = isClosedNotice(post) ? 'standard closed-notice' : 'standard';
+    post.type = isClosedNotice(post) ? 'closed-notice' : 'standard';
     return post;
   }
 
