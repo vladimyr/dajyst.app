@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - "9"
+
+script:
+  - npm run clean
+  - npm run build
+  - npm run favicons
+
+deploy:
+  provider: surge
+  project: ./dist/
+  domain: https://dajyst.surge.sh
+  skip_cleanup: true
