@@ -3,12 +3,10 @@ window.Promise = window.Promise || require('pinkie-promise');
 import './style.styl';
 
 import $ from 'zepto';
-import html from 'nanohtml';
-import raw from 'nanohtml/raw';
-import fecha from 'fecha';
 import http from './http';
 import { readPosts } from './scraper';
 import { trimLines, reformatText } from './helpers';
+import { renderError, renderPost } from './renderer';
 import pkg from './package.json';
 
 const ua = `${pkg.name}/${pkg.version}`;
@@ -35,67 +33,30 @@ const headingSize = 1;
 const isClosedNotice = post => reClosedNotice.test(post.content);
 const isDailyMenu = post => reMenuHeading.test(post.content);
 
-const timestampFormat = 'MMMM D [at] H:mm';
-const date = timestamp => fecha.format(new Date(timestamp), timestampFormat);
 const isToday = timestamp => (new Date()).getDate() === (new Date(timestamp)).getDate();
-
-const renderText = content => {
-  const text = content.replace(/(?:\n)/g, '<br/>').trim();
-  return html`<p class="raw">${ raw(text) }</p>`;
-};
-
-const renderMenu = offers => html`
-<ul class="menu">
-${ offers.map(({ name, price }) => html`
-  <li class="offer">
-    <span class="name">${ name }</span>
-    <span class="price price-${ price }">${ price }kn</span>
-  </li>
-`)}
-</ul>
-`;
-
-const renderPost = post => html`
-<div class="post">
-  <span class="timestamp">
-    <i class="icon material-icons">access_time</i> ${ date(post.timestamp) }
-  </span>
-  <div class="content">
-  ${ post.offers ? renderMenu(post.offers) : renderText(post.content) }
-  </div>
-  <a href="${ post.url }" target="_blank" class="btn">Open on Facebook</a>
-  <a href="tel:${ phone }" target="_blank" class="btn btn-phone">
-    <i class="icon material-icons">call</i> Order
-  </a>
-</div>
-`;
-
-const renderError = message => html`
-<div class="error">
-  <h2 class="title">Error</h2>
-  <span class="message">${ message }</span>
-  <a href="${ url }" target="_blank" class="btn">Open on Facebook</a>
-</div>
-`;
 
 const $spinner = $('.spinner');
 const $output = $('.output');
 
 fetchPosts(url, 5)
   .then(posts => {
-    posts.forEach(post =>
-      $(renderPost(post))
+    const [lastPost] = posts;
+    const options = { phone, url };
+
+    posts.forEach(post => {
+      $(renderPost(post, options))
         .addClass(classes[post.type])
         .toggleClass('today', isToday(post.timestamp))
-        .appendTo($output));
+        .appendTo($output);
+    });
 
     if (posts.length === 0) {
       $output.empty();
-      $(renderError('Failed to fetch daily offers from Facebook site.'))
-        .appendTo($output);
+      const msg = 'Failed to fetch daily offers from Facebook site.';
+      $(renderError(msg, options)).appendTo($output);
     }
 
-    if (posts[0].type === Types.ClosedNotice) {
+    if (lastPost && lastPost.type === Types.ClosedNotice) {
       $(document.documentElement).addClass('closed');
     }
 
